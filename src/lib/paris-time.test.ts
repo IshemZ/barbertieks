@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dayRange, monthRange, parisDate } from "./paris-time";
+import { addDays, dayLabel, dayRange, isDateString, monthLabel, monthRange, parisDate } from "./paris-time";
 
 describe("parisDate", () => {
   it("donne la date à Paris, pas en UTC", () => {
@@ -44,5 +44,37 @@ describe("monthRange", () => {
       start: "2026-11-30T23:00:00.000Z",
       end: "2026-12-31T23:00:00.000Z",
     });
+  });
+});
+
+describe("addDays", () => {
+  it("passe au jour suivant en changeant de mois", () => {
+    expect(addDays("2026-11-30", 1)).toBe("2026-12-01");
+  });
+
+  it("recule d'un jour en changeant d'année", () => {
+    expect(addDays("2026-01-01", -1)).toBe("2025-12-31");
+  });
+});
+
+describe("isDateString", () => {
+  it("accepte une date réelle au format AAAA-MM-JJ", () => {
+    expect(isDateString("2026-02-28")).toBe(true);
+  });
+
+  it("refuse une date impossible ou mal formée", () => {
+    for (const value of ["2026-02-30", "2026-13-01", "15/11/2026", "", undefined, ["2026-11-15"]]) {
+      expect(isDateString(value)).toBe(false);
+    }
+  });
+});
+
+describe("libellés", () => {
+  it("affiche le jour en toutes lettres", () => {
+    expect(dayLabel("2026-11-15")).toBe("dimanche 15 novembre 2026");
+  });
+
+  it("affiche le mois en toutes lettres", () => {
+    expect(monthLabel("2026-11-15")).toBe("novembre 2026");
   });
 });

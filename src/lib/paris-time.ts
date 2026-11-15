@@ -64,3 +64,40 @@ export function monthRange(date: string): Range {
     end: parisMidnight(y, m + 1, 1).toISOString(),
   };
 }
+
+/** Date calendaire décalée de n jours (AAAA-MM-JJ). */
+export function addDays(date: string, days: number): string {
+  const [y, m, d] = parse(date);
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10);
+}
+
+/** Vrai pour une date existante au format AAAA-MM-JJ (ex. refuse le 30 février). */
+export function isDateString(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  return addDays(value, 0) === value;
+}
+
+const dayLabelFormat = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "UTC",
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const monthLabelFormat = new Intl.DateTimeFormat("fr-FR", { timeZone: "UTC", month: "long", year: "numeric" });
+
+function asUtcDate(date: string): Date {
+  const [y, m, d] = parse(date);
+  return new Date(Date.UTC(y, m - 1, d));
+}
+
+/** Ex. « dimanche 15 novembre 2026 ». */
+export function dayLabel(date: string): string {
+  return dayLabelFormat.format(asUtcDate(date));
+}
+
+/** Ex. « novembre 2026 ». */
+export function monthLabel(date: string): string {
+  return monthLabelFormat.format(asUtcDate(date));
+}
