@@ -6,11 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Produit
 
-Outil d'enregistrement des recettes pour Barber Tieks, un salon de coiffure unique (pas de multi-tenant). Remplace des notes prises à la main sur téléphone. Le cahier des charges complet (tarifs, produits, règles) est dans `docs/fiche-projet.md` : c'est la source de vérité.
+Outil d'enregistrement des recettes pour Barber Tieks, un salon de coiffure unique (pas de multi-tenant). Remplace des notes prises à la main sur téléphone.
 
 - Usage smartphone, utilisateurs peu à l'aise avec le numérique : UI mobile-first, très simple, saisie en quelques tapotements.
-- **Coiffeurs** (le salarié et Mehdi) : saisissent chaque passage client juste après la prestation, et voient leur propre total du jour.
-- **Mehdi** (gérant) : consulte en plus les chiffres de tout le salon.
+- **Coiffeurs** (le salarié et le gérant) : saisissent chaque passage client juste après la prestation, et voient leur propre total du jour.
+- **Le gérant** (gérant) : consulte en plus les chiffres de tout le salon.
 
 **Exigence n°1 du client : la simplicité.** L'outil ne doit pas être complexe, et le parcours utilisateur doit rester court. Avant d'ajouter un écran, un champ, une étape ou une option, vérifier qu'il est indispensable. Dans le doute, ne pas l'ajouter.
 
@@ -18,17 +18,16 @@ Règles métier clés :
 
 - Un passage = une ou plusieurs prestations à prix fixe (on peut en ajouter pendant la visite) + éventuellement des ventes de produits.
 - Chaque coiffeur a sa propre caisse. Modes de paiement : espèces, CB (TPE bancaire), virement.
-- Chiffres attendus : CA du jour, CA par personne et par mode de paiement, CA produits séparé des prestations, vue du mois.
-- Répartition : 100 % des recettes de Mehdi pour lui ; le salarié touche 50 % de ses recettes en espèces chaque soir.
+- Chiffres attendus : CA du jour, CA par personne et par mode de paiement, CA produits séparé des prestations.
 - Montants en euros : stocker en centimes (entiers), afficher au format fr-FR.
 
 Décisions pour la V1 (validées avec le client) :
 
-- Chaque coiffeur saisit sur son propre téléphone.
+- Chaque coiffeur accède à l'interface sur son propre téléphone.
 - Un passage est payé avec un seul mode de paiement.
 - Tarifs fixes : aucune remise, aucun prix libre, aucun pourboire.
-- Connexion par email + mot de passe (Supabase Auth), session mémorisée sur le téléphone. Comptes créés par l'admin, pas d'inscription publique. Chaque coiffeur voit son propre total du jour ; seul Mehdi voit les chiffres du salon.
-- Les ventes de produits comptent dans le CA du salon, mais pas dans le CA du salarié (donc pas dans ses 50 %).
+- Connexion par code pin, seul le gérant voit les chiffres du salon.
+- Les ventes de produits comptent dans le CA du salon, mais pas dans le CA du salarié.
 - Pas d'écran de clôture du jour.
 - Pas de modification ni de suppression d'un passage saisi.
 - Pas de calcul de marge produits.
