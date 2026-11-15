@@ -116,6 +116,44 @@ npm run dev
 - Caisse : <http://localhost:3000> (code `1234` en développement).
 - Espace gérant : <http://localhost:3000/gerant>.
 
+## Déploiement (Vercel)
+
+Prérequis : projet Supabase de production prêt (étapes 4 à 6).
+
+### 1. Créer le projet Vercel
+
+1. Sur vercel.com : « Add New » > « Project », importer le dépôt GitHub `barbertieks`.
+2. Garder les réglages détectés (Next.js, Node 26). La région des fonctions est fixée à Paris (`cdg1`) dans `vercel.json`.
+3. Ne pas lancer le premier déploiement avant d'avoir saisi les variables.
+
+### 2. Saisir les variables d'environnement
+
+Project Settings > Environment Variables. Mêmes noms qu'en développement :
+
+| Variable                               | Production                                    | Preview                  |
+| -------------------------------------- | --------------------------------------------- | ------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`             | projet de production                          | projet `barbertieks-dev` |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | projet de production                          | projet `barbertieks-dev` |
+| `SUPABASE_SECRET_KEY`                  | projet de production, cocher « Sensitive »    | projet `barbertieks-dev` |
+| `TILL_PIN_HASH`                        | `npm run hash-pin` avec le vrai code du salon | hash de `1234`           |
+| `TILL_SESSION_SECRET`                  | nouvelle valeur `openssl rand -base64 32`     | valeur de dev            |
+
+Ne jamais réutiliser en production le secret ou le code de développement.
+
+### 3. Déployer
+
+- Production : chaque merge sur `main` déploie automatiquement.
+- Preview : chaque PR obtient une URL de test reliée à `barbertieks-dev`. Y tester une vente complète.
+
+### 4. Vérifier la production
+
+Une vente ne peut pas être supprimée : ne pas enregistrer de vente de test en production.
+
+1. Caisse : le pavé numérique s'affiche, un mauvais code est refusé.
+2. Espace gérant : connexion avec le compte du gérant, pages Chiffres, Salariés et Catalogue.
+3. Ajouter les vrais salariés dans Salariés. Vérifier les prix du catalogue.
+4. Saisir le vrai code caisse sur le téléphone du salon : il reste ouvert un an.
+
 ## Commandes utiles
 
 | Commande                           | Rôle                                                       |
