@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { E2E_MANAGER } from "./manager";
+import { unlockTill } from "./till";
 
 // Noms uniques : les tests ne suppriment rien, ils archivent.
 const stamp = () => `${Date.now()}`.slice(-6);
@@ -13,11 +14,7 @@ async function signIn(page: Page) {
 }
 
 async function openTillAtEmployeeStep(page: Page) {
-  await page.goto("/");
-  const pinPad = page.getByRole("heading", { name: "Code caisse" });
-  if (await pinPad.isVisible()) {
-    for (const digit of "1234") await page.getByRole("button", { name: digit, exact: true }).click();
-  }
+  await unlockTill(page);
   await page.getByRole("button", { name: /Coupe signature/ }).click();
   await page.getByRole("button", { name: "Espèces" }).click();
   await expect(page.getByRole("heading", { name: "Qui a fait la vente ?" })).toBeVisible();

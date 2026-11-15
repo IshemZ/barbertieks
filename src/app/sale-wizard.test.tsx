@@ -31,6 +31,13 @@ describe("SaleWizard", () => {
     expect(screen.getByRole("heading", { name: "Produits" })).toBeDefined();
   });
 
+  it("propose l'espace gérant à l'étape 1 seulement", () => {
+    render(<SaleWizard items={items} employees={employees} action={vi.fn<Action>()} />);
+    expect(screen.getByRole("link", { name: "Espace gérant" }).getAttribute("href")).toBe("/gerant");
+    tap(/Coupe signature/);
+    expect(screen.queryByRole("link", { name: "Espace gérant" })).toBeNull();
+  });
+
   it("prévient quand le catalogue est vide", () => {
     render(<SaleWizard items={[]} employees={employees} action={vi.fn<Action>()} />);
     expect(screen.getByText("Aucun article. Le gérant doit en ajouter dans son espace.")).toBeDefined();

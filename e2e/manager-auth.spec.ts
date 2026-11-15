@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { E2E_MANAGER } from "./manager";
+import { unlockTill } from "./till";
 
 async function signIn(page: Page, password: string) {
   await page.goto("/gerant/connexion");
@@ -36,9 +37,7 @@ test("le gérant se connecte, reste connecté puis se déconnecte", async ({ pag
 });
 
 test("la caisse ne donne pas accès à l'espace gérant", async ({ page }) => {
-  await page.goto("/");
-  for (const digit of "1234") await page.getByRole("button", { name: digit, exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Quel article ?" })).toBeVisible();
+  await unlockTill(page);
 
   await page.goto("/gerant");
   await expect(page).toHaveURL(/\/gerant\/connexion$/);

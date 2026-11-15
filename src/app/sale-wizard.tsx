@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition, type ReactNode } from "react";
 import type { RecordSaleResult } from "./actions/sales";
 import { formatEuros } from "@/lib/money";
@@ -86,6 +87,9 @@ export function SaleWizard({ items, employees, action }: SaleWizardProps) {
           <ItemGroup title="Prestations" items={items.filter((i) => i.kind === "service")} onPick={pickItem} />
           <ItemGroup title="Produits" items={items.filter((i) => i.kind === "product")} onPick={pickItem} />
           {items.length === 0 && <p className="text-lg">Aucun article. Le gérant doit en ajouter dans son espace.</p>}
+          <Link href="/gerant" className="mt-auto self-center px-3 py-2 text-zinc-500 underline">
+            Espace gérant
+          </Link>
         </>
       )}
 

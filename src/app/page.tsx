@@ -1,12 +1,12 @@
 import { recordSale } from "./actions/sales";
-import { unlockTill } from "./actions/till";
-import { PinPad } from "./pin-pad";
 import { SaleWizard } from "./sale-wizard";
+import { Welcome } from "./welcome";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { isTillUnlocked } from "@/lib/till-session";
 
-export default async function TillPage() {
-  if (!(await isTillUnlocked())) return <PinPad action={unlockTill} />;
+export default async function HomePage() {
+  // Téléphone déjà ouvert avec le code : la caisse directement, sans étape de plus par vente.
+  if (!(await isTillUnlocked())) return <Welcome />;
 
   const db = supabaseAdmin();
   const [items, employees] = await Promise.all([

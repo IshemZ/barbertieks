@@ -1,15 +1,8 @@
 import { expect, test } from "@playwright/test";
-
-// Code caisse de développement (voir README) et salarié de supabase/seed.sql.
-const DEV_PIN = "1234";
+import { unlockTill } from "./till";
 
 test("un coiffeur enregistre une vente en 4 étapes", async ({ page }) => {
-  await page.goto("/");
-  for (const digit of DEV_PIN) {
-    await page.getByRole("button", { name: digit, exact: true }).click();
-  }
-
-  await expect(page.getByRole("heading", { name: "Quel article ?" })).toBeVisible();
+  await unlockTill(page);
   await page.getByRole("button", { name: /Coupe signature/ }).click();
   await page.getByRole("button", { name: "CB" }).click();
   await page.getByRole("button", { name: "Mehdi" }).click();
