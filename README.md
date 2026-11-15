@@ -97,13 +97,26 @@ La commande demande le code à 4 chiffres et affiche la ligne `TILL_PIN_HASH=…
 
 > **Sécurité** : `SUPABASE_SECRET_KEY` donne un accès total à la base. Ne jamais la préfixer par `NEXT_PUBLIC_`, ne jamais la commiter. `.env.local` est ignoré par Git.
 
-### 8. Lancer l'application
+### 8. Créer le compte gérant en local
+
+```bash
+npm run create-manager
+```
+
+La commande demande l'e-mail et le mot de passe (12 caractères minimum), puis crée le compte dans la base de `.env.local`.
+Le mot de passe s'affiche pendant la saisie : à n'utiliser que pour un compte local.
+En production, créer le compte depuis le tableau de bord Supabase (étape 6).
+
+Les tests E2E créent leur propre compte (`gerant-e2e@example.test`) dans la base locale.
+
+### 9. Lancer l'application
 
 ```bash
 npm run dev
 ```
 
-Ouvrir <http://localhost:3000>.
+- Caisse : <http://localhost:3000> (code `1234` en local).
+- Espace gérant : <http://localhost:3000/gerant>.
 
 ## Commandes utiles
 

@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "hash-pin": "node scripts/hash-pin.mts",
-    "db:types": "supabase gen types typescript > src/lib/database.types.ts"
+    "db:types": "supabase gen types typescript > src/lib/database.types.ts",
+    "create-manager": "node --env-file-if-exists=.env.local scripts/create-manager.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
