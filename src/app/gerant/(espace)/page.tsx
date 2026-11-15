@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { signOut } from "./actions";
 import { SummaryView } from "./summary-view";
 import { requireManager } from "@/lib/manager-session";
 import { addDays, dayLabel, dayRange, isDateString, monthLabel, monthRange, parisDate } from "@/lib/paris-time";
@@ -26,15 +25,8 @@ export default async function ManagerHomePage({ searchParams }: PageProps<"/gera
   });
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-4 py-6">
-      <header className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold">Chiffres du salon</h1>
-        <form action={signOut}>
-          <button type="submit" className="rounded-xl px-3 py-2 text-lg font-medium underline">
-            Se déconnecter
-          </button>
-        </form>
-      </header>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-3xl font-semibold">Chiffres du salon</h1>
 
       <nav aria-label="Choix du jour" className="flex flex-wrap gap-2">
         <Link href={`/gerant?jour=${addDays(day, -1)}`} className={navClass}>
@@ -58,6 +50,6 @@ export default async function ManagerHomePage({ searchParams }: PageProps<"/gera
         employeeNames={employeeNames}
       />
       <SummaryView title={monthLabel(day)} summary={summarizeSales(monthSales)} employeeNames={employeeNames} />
-    </main>
+    </div>
   );
 }

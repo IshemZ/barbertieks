@@ -31,6 +31,11 @@ describe("SaleWizard", () => {
     expect(screen.getByRole("heading", { name: "Produits" })).toBeDefined();
   });
 
+  it("prévient quand le catalogue est vide", () => {
+    render(<SaleWizard items={[]} employees={employees} action={vi.fn<Action>()} />);
+    expect(screen.getByText("Aucun article. Le gérant doit en ajouter dans son espace.")).toBeDefined();
+  });
+
   it("enchaîne article, paiement, salarié puis récapitulatif", () => {
     render(<SaleWizard items={items} employees={employees} action={vi.fn<Action>()} />);
     expect(heading()).toBe("Quel article ?");

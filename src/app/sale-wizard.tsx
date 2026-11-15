@@ -85,6 +85,7 @@ export function SaleWizard({ items, employees, action }: SaleWizardProps) {
         <>
           <ItemGroup title="Prestations" items={items.filter((i) => i.kind === "service")} onPick={pickItem} />
           <ItemGroup title="Produits" items={items.filter((i) => i.kind === "product")} onPick={pickItem} />
+          {items.length === 0 && <p className="text-lg">Aucun article. Le gérant doit en ajouter dans son espace.</p>}
         </>
       )}
 
