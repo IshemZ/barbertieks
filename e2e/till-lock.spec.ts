@@ -24,8 +24,8 @@ test("un mauvais code est refusé", async ({ page }) => {
 test("le bon code ouvre la caisse, qui reste ouverte après rechargement", async ({ page }) => {
   await page.goto("/");
   await typePin(page, DEV_PIN);
-  await expect(page.getByRole("heading", { name: "Nouvelle vente" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Quel article ?" })).toBeVisible();
 
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Nouvelle vente" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Quel article ?" })).toBeVisible();
 });

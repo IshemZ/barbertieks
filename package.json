@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "hash-pin": "node scripts/hash-pin.mts"
+    "hash-pin": "node scripts/hash-pin.mts",
+    "db:types": "supabase gen types typescript > src/lib/database.types.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

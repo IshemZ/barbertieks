@@ -1,5 +1,7 @@
+import type { PaymentMethod } from "./payment";
+
+export type { PaymentMethod };
 export type ItemKind = "service" | "product";
-export type PaymentMethod = "cash" | "card" | "transfer";
 
 export type SaleLine = {
   price_cents: number;
