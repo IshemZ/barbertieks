@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { getManager } from "./manager-session";
 import { isPinFormat, signSession, verifyPin, verifySession } from "./till-token";
 
 const COOKIE_NAME = "till_session";
@@ -20,6 +21,11 @@ function config() {
 export async function isTillUnlocked(): Promise<boolean> {
   const token = (await cookies()).get(COOKIE_NAME)?.value;
   return token ? verifySession(token, config().key, Date.now()) : false;
+}
+
+/** Vrai si ce navigateur peut saisir des ventes : caisse ouverte avec le code, ou gérant connecté (il encaisse aussi). */
+export async function canUseTill(): Promise<boolean> {
+  return (await isTillUnlocked()) || Boolean(await getManager());
 }
 
 /** Vérifie le code et, s'il est bon, ouvre la caisse sur ce navigateur. À appeler depuis une Server Action. */

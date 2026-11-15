@@ -42,3 +42,18 @@ test("la caisse ne donne pas accès à l'espace gérant", async ({ page }) => {
   await page.goto("/gerant");
   await expect(page).toHaveURL(/\/gerant\/connexion$/);
 });
+
+test("le gérant connecté encaisse depuis son espace sans code caisse", async ({ page }) => {
+  await signIn(page, E2E_MANAGER.password);
+  await expect(page.getByRole("heading", { name: "Chiffres du salon" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Caisse", exact: true }).click();
+  await page.getByRole("button", { name: /Coupe signature/ }).click();
+  await page.getByRole("button", { name: "Espèces" }).click();
+  await page.getByRole("button", { name: "Mehdi" }).click();
+  await page.getByRole("button", { name: "Valider la vente" }).click();
+  await expect(page.getByText("Vente enregistrée")).toBeVisible();
+
+  await page.getByRole("link", { name: "Espace gérant" }).click();
+  await expect(page.getByRole("heading", { name: "Chiffres du salon" })).toBeVisible();
+});

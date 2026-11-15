@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const LOGIN_PATH = "/gerant/connexion";
 
 /**
- * Espace gérant : rafraîchit la session Supabase (seul endroit où les cookies peuvent être
+ * Espace gérant et caisse (que le gérant utilise aussi) : rafraîchit la session Supabase (seul endroit où les cookies peuvent être
  * réécrits avant le rendu) et redirige selon l'état de connexion. Contrôle optimiste :
  * chaque page et action revérifie avec requireManager().
  */
@@ -29,7 +29,11 @@ export async function proxy(request: NextRequest) {
 
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims);
-  const onLoginPage = request.nextUrl.pathname === LOGIN_PATH;
+  const { pathname } = request.nextUrl;
+  const onLoginPage = pathname === LOGIN_PATH;
+
+  // Caisse : session rafraîchie seulement, l'accès est vérifié par la page (code ou gérant).
+  if (!pathname.startsWith("/gerant")) return response;
 
   if (!signedIn && !onLoginPage) return redirectKeepingCookies(request, LOGIN_PATH, response);
   if (signedIn && onLoginPage) return redirectKeepingCookies(request, "/gerant", response);
@@ -43,5 +47,5 @@ function redirectKeepingCookies(request: NextRequest, path: string, from: NextRe
 }
 
 export const config = {
-  matcher: ["/gerant", "/gerant/:path*"],
+  matcher: ["/", "/gerant", "/gerant/:path*"],
 };

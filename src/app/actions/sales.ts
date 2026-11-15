@@ -2,14 +2,14 @@
 
 import { parseSaleInput } from "@/lib/sale-input";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { isTillUnlocked } from "@/lib/till-session";
+import { canUseTill } from "@/lib/till-session";
 
 export type RecordSaleResult = { ok: true } | { ok: false; error: string };
 
 const RETRY = "La vente n'a pas été enregistrée. Réessayez.";
 
 export async function recordSale(input: unknown): Promise<RecordSaleResult> {
-  if (!(await isTillUnlocked())) {
+  if (!(await canUseTill())) {
     return { ok: false, error: "Caisse verrouillée. Rechargez la page et saisissez le code." };
   }
 

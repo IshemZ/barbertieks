@@ -20,6 +20,9 @@ export default async function ManagerLayout({ children }: LayoutProps<"/gerant">
         <Link href="/gerant/catalogue" className={linkClass}>
           Catalogue
         </Link>
+        <Link href="/" className={linkClass}>
+          Caisse
+        </Link>
         <form action={signOut} className="ml-auto">
           <button type="submit" className="rounded-xl px-3 py-2 text-lg font-medium text-zinc-500 underline">
             Se déconnecter
