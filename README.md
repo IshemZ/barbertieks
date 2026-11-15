@@ -79,10 +79,21 @@ Remplir `.env.local` :
 | `NEXT_PUBLIC_SUPABASE_URL`             | Project Settings > API (ou sortie de `supabase start`) |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Project Settings > API Keys > Publishable key          |
 | `SUPABASE_SECRET_KEY`                  | Project Settings > API Keys > Secret key               |
-| `TILL_PIN_HASH`                        | Hash du code caisse à 4 chiffres (procédure à venir)   |
+| `TILL_PIN_HASH`                        | `npm run hash-pin` (voir ci-dessous)                   |
 | `TILL_SESSION_SECRET`                  | Chaîne aléatoire : `openssl rand -base64 32`           |
 
-En développement local, utiliser l'URL et les clés affichées par `npx supabase start`.
+En développement local, utiliser l'URL et les clés affichées par `npx supabase status`.
+
+#### Code caisse
+
+```bash
+npm run hash-pin
+```
+
+La commande demande le code à 4 chiffres et affiche la ligne `TILL_PIN_HASH=…` à copier dans `.env.local` (ou dans Vercel en production).
+
+- En local, utiliser le code `1234` : les tests E2E le saisissent.
+- Changer le code ferme la caisse sur tous les téléphones. Il faudra saisir le nouveau code.
 
 > **Sécurité** : `SUPABASE_SECRET_KEY` donne un accès total à la base. Ne jamais la préfixer par `NEXT_PUBLIC_`, ne jamais la commiter. `.env.local` est ignoré par Git.
 
