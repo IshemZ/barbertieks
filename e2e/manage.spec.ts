@@ -28,7 +28,7 @@ test("le gérant ajoute, renomme puis archive un salarié", async ({ page }) => 
   await signIn(page);
   await page.getByRole("link", { name: "Salariés" }).click();
 
-  await page.getByLabel("Prénom").fill(name);
+  await page.getByLabel("Prénom", { exact: true }).fill(name);
   await page.getByRole("button", { name: "Ajouter" }).click();
   const active = page.getByRole("list", { name: "Salariés actifs" });
   const row = active.getByRole("listitem").filter({ hasText: name });
@@ -57,7 +57,7 @@ test("le gérant ajoute, modifie puis archive un produit", async ({ page }) => {
   await page.getByRole("link", { name: "Catalogue" }).click();
 
   await page.getByLabel("Nom", { exact: true }).fill(name);
-  await page.getByLabel("Produit").check();
+  await page.getByLabel("Produit", { exact: true }).check();
   await page.getByLabel("Prix en euros").first().fill("7,5");
   await page.getByRole("button", { name: "Ajouter" }).click();
   const products = page.getByRole("region", { name: "Produits" });
@@ -78,7 +78,7 @@ test("un prix invalide est refusé avec un message clair", async ({ page }) => {
   await signIn(page);
   await page.goto("/gerant/catalogue");
   await page.getByLabel("Nom", { exact: true }).fill(`Trop cher ${stamp()}`);
-  await page.getByLabel("Prestation").check();
+  await page.getByLabel("Prestation", { exact: true }).check();
   await page.getByLabel("Prix en euros").first().fill("1500");
   await page.getByRole("button", { name: "Ajouter" }).click();
   await expect(page.getByText("Saisissez un prix entre 0,01 € et 1000 €, par exemple 15 ou 7,50.")).toBeVisible();
