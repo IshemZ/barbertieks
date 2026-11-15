@@ -1,13 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 import { E2E_MANAGER } from "./manager";
 
-/** Crée le compte gérant de test s'il n'existe pas encore (base locale uniquement). */
+// Seul projet Supabase sur lequel les tests E2E ont le droit d'écrire : barbertieks-dev.
+// Écrit en dur (et non lu depuis .env.local) pour que les tests ne visent jamais la production par erreur.
+const DEV_PROJECT_URL = "https://gjazsksnziluogpzitwa.supabase.co";
+
+/** Crée le compte gérant de test s'il n'existe pas encore (projet de développement uniquement). */
 export default async function globalSetup() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SECRET_KEY;
   if (!url || !key) throw new Error("Variables Supabase absentes : remplir .env.local (voir README).");
-  if (!/^http:\/\/(127\.0\.0\.1|localhost)[:/]/.test(url)) {
-    throw new Error(`Les tests E2E ne tournent que sur la base locale, pas sur ${url}.`);
+  if (url.replace(/\/+$/, "") !== DEV_PROJECT_URL) {
+    throw new Error(`Les tests E2E ne tournent que sur ${DEV_PROJECT_URL}, pas sur ${url}.`);
   }
 
   const supabase = createClient(url, key, { auth: { persistSession: false } });
